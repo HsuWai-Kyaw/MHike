@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">M-Hike</string>
+    <string name="txtName">Name of Hike</string>
+    <string name="txtLocation">Location</string>
+    <string name="txtDate">Date of Hike</string>
+    <string name="btnDate">Choose Date</string>
+    <string name="txtParking">Parking Available</string>
+    <string name="txtYes">Yes</string>
+    <string name="txtNo">No</string>
+    <string name="txtLength">Length the Hike(miles)</string>
+    <string name="txtDifficulty">Level of difficulty</string>
+    <string name="txtDescription">Description</string>
+    <string name="txtAdditional1">Additional 1</string>
+    <string name="txtAdditional2">Additional 2</string>
+    <string name="btnNext">Next</string>
+    <string name="btnBack">Back</string>
+    <string name="btnSave">Save</string>
+    <string name="btnDetail">Detail</string>
+    <string name="btnEdit">Edit</string>
+    <string name="btnDelete">Delete</string>
+</resources>
