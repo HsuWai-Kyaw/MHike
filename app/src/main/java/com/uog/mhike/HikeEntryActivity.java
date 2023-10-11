@@ -26,7 +26,7 @@ public class HikeEntryActivity extends AppCompatActivity {
     private Button btnDate, btnNext;
     private RadioButton rdoYes, rdoNo;
 
-    private String[] locations = {"Location1", "Location2", "Location3", "Location4"};
+    public static final String[] locations = {"Location1", "Location2", "Location3", "Location4"};
     private String[] difficulty = {"Low", "Medium", "High"};
 
     String location, diff; //**
@@ -42,18 +42,18 @@ public class HikeEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hike_entry);
 
-        txtName = findViewById(R.id.txtName);
+        txtName = findViewById(R.id.txtAdvName);
         txtLength = findViewById(R.id.txtLength);
         txtDescription = findViewById(R.id.txtDescription);
         txtAdditional1 = findViewById(R.id.txtAdditional1);
         txtAdditional2 = findViewById(R.id.txtAdditional2);
 
-        spnLocation = findViewById(R.id.spnLocation);
+        spnLocation = findViewById(R.id.spnAdvLocation);
         spnDifficulty = findViewById(R.id.spnDifficulty);
 
-        txtDate = findViewById(R.id.txtDate);
+        txtDate = findViewById(R.id.txtAdvDate);
 
-        btnDate = findViewById(R.id.btnDate);
+        btnDate = findViewById(R.id.btnAdvDate);
         btnNext = findViewById(R.id.btnNext);
 
         rdoYes = findViewById(R.id.rdoYes);

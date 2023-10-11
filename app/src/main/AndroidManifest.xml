@@ -13,6 +13,9 @@
         android:theme="@style/Theme.MHike"
         tools:targetApi="31">
         <activity
+            android:name=".HikeAdvancedSearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".HikeListActivity"
             android:exported="true">
             <intent-filter>
