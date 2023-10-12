@@ -124,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (date != null && !date.trim().isEmpty())
             query += " AND " + Hike.DATE + "='" + date + "'";
         if (length !=null )
-            query += " AND " + Hike.LENGTH + "='" + length + "'";
+            query += " AND " + Hike.LENGTH + "='" + length;
             return searchHike( query, cursor);
     }
 

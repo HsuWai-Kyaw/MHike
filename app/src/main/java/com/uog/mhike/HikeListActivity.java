@@ -28,6 +28,8 @@ public class HikeListActivity extends AppCompatActivity {
     private HikeAdapter hikeAdapter;
     private RecyclerView recyclerView;
     public static final int UPDATE_REQUEST =1;
+    public static final int SEARCH_REQUEST =2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,15 @@ public class HikeListActivity extends AppCompatActivity {
                 search(txtSearch.getText().toString());
             }
         });
+        btnAdvancedSearch.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getBaseContext(),HikeAdvancedSearchActivity.class);
+                startActivityForResult(intent,SEARCH_REQUEST);
+
+            }
+        });
     }
 
     @Override
@@ -129,6 +140,22 @@ public class HikeListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if ( requestCode == UPDATE_REQUEST && resultCode == RESULT_OK){
             search("");
+        } else if (requestCode == SEARCH_REQUEST && resultCode == RESULT_OK) {
+            String name =data.getStringExtra(Hike.NAME);
+            String location =data.getStringExtra(Hike.LOCATION);
+            String date = data.getStringExtra(Hike.DATE);
+            String length = data.getStringExtra(Hike.LENGTH);
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        hikeList = databaseHelper.searchHike(name,location,date,(length != null && !length.isEmpty()? Double.parseDouble(length) : null));
+                        hikeAdapter.setHikeList(hikeList);
+                        hikeAdapter.notifyDataSetChanged(); //refresh data
+                    }catch (Exception e){e.printStackTrace();}
+                }
+            });
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
