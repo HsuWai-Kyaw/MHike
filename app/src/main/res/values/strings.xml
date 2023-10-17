@@ -18,4 +18,6 @@
     <string name="btnDetail">Detail</string>
     <string name="btnEdit">Edit</string>
     <string name="btnDelete">Delete</string>
+    <string name="lblObservation">Observation</string>
+    <string name="lblComment">Comment</string>
 </resources>

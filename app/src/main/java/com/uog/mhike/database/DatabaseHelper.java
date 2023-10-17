@@ -35,6 +35,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             , TABLE_HIKE,Hike.ID, Hike.NAME, Hike.LOCATION, Hike.DATE, Hike.PARKING , Hike.LENGTH, Hike.DIFFICULTY, Hike.DESCRIPTION, Hike.ADDITIONAL1, Hike.ADDITIONAL2, Hike.ADDITIONAL_NUM1,Hike.ADDITIONAL_NUM2);
 
 
+    private static final String CREATE_OBSERVATION_TABLE =String.format(
+            "CREATE TABLE IF NOT EXIST %s("+ //tblObservation
+                    " %s INTEGER PRIMARY KEY AUTOINCREMENT," + //id
+                    " %s INTEGER,"+ //hike_id
+                    " %s TEXT,"+ //observation
+                    " %s BIGINT,"+ //date_time
+                    " %s TEXT,"+ //comment
+                    " %s TEXT,"+ //str1
+                    " %s TEXT,"+ //str2
+                    " %s TEXT,"+ //d1
+                    " %s TEXT,"+ //d2
+                    " CONSTRAINT fk_hike FOREIGN KEY (%s) REFERENCES %s (%s) ON UPDATE CASCADE ON DELETE CASCADE)"
+            , TABLE_OBSERVATION,Observation.ID, Observation.HIKE_ID, Observation.OBSERVATION,Observation.DATE_TIME, Observation.COMMENT,
+            Observation.STR1, Observation.STR2, Observation.D1, Observation.D2, Observation.HIKE_ID, TABLE_HIKE, Hike.ID);
+
+
     public DatabaseHelper(Context context) {
 
         super(context, DATABASE_NAME, null, 1);
@@ -47,7 +63,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-    sqLiteDatabase.execSQL(CREATE_HIKE_TABLE);
+        sqLiteDatabase.execSQL(CREATE_HIKE_TABLE);
+        sqLiteDatabase.execSQL(CREATE_OBSERVATION_TABLE);
+
     }
 
     @Override
@@ -151,6 +169,82 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         results.add(hike); cursor.moveToNext();
 
     }
+        cursor.close();
+        return results;
+    }
+
+
+    public long saveObservation(Observation observation){
+        long result = 0;
+        ContentValues rowValues =new ContentValues();
+
+        rowValues.put(Observation.HIKE_ID, observation.getHikeId()); //column name, column value
+        rowValues.put(Observation.OBSERVATION,observation.getObservation());
+        rowValues.put(Observation.DATE_TIME, observation.dateTimeToSeconds());
+        rowValues.put(Observation.COMMENT, observation.getComment());
+        rowValues.put(Observation.STR1, observation.getStr1());
+        rowValues.put(Observation.STR2, observation.getStr2());
+        rowValues.put(Observation.D1, observation.getD1());
+        rowValues.put(Observation.D2, observation.getD2());
+        result=database.insertOrThrow(TABLE_OBSERVATION, null,rowValues);
+        return result;
+    }
+
+    public long updateObservation(Observation observation){
+        long result = 0;
+        ContentValues rowValues =new ContentValues();
+
+        rowValues.put(Observation.OBSERVATION,observation.getObservation());
+        rowValues.put(Observation.DATE_TIME, observation.dateTimeToSeconds());
+        rowValues.put(Observation.COMMENT, observation.getComment());
+        rowValues.put(Observation.STR1, observation.getStr1());
+        rowValues.put(Observation.STR2, observation.getStr2());
+        rowValues.put(Observation.D1, observation.getD1());
+        rowValues.put(Observation.D2, observation.getD2());
+        result=database.insertOrThrow(TABLE_OBSERVATION, null,rowValues);
+
+        String where ="id=?";
+        String values[]={observation.getId() + ""};
+        result=database.update(TABLE_OBSERVATION, rowValues, where, values);
+
+        return result;
+    }
+
+    public long deleteObservation(int id){
+        long result =0;
+        String where ="id=?";
+        String values[]={String.valueOf(id)};
+        result =database.delete(TABLE_OBSERVATION, where, values);
+        return result;
+    }
+
+    public List<Observation> searchObservation(Integer hikeId) throws Exception{
+        Cursor cursor = null;
+        //SELECT * FROM tblObservation WHERE hikeId =
+        String query ="SELECT * FROM " + TABLE_OBSERVATION + " WHERE " + Observation.HIKE_ID + "=" + hikeId;
+        return searchObservation( query, cursor);
+    }
+
+    public List<Observation>searchObservation( String query, Cursor cursor)throws Exception{
+        List<Observation> results = new ArrayList<>();
+        cursor = database.rawQuery( query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            Observation observation=new Observation(
+                    cursor.getInt(0), //id
+                    cursor.getInt(1), //hike_id
+                    cursor.getString(2), //observation
+                    Observation.secondToDateTime(cursor.getLong(3)), //datetime
+                    cursor.getString(4), //comment
+                    cursor.getString(5), //str1
+                    cursor.getString(6), //str2
+                    cursor.getDouble(7), //d1
+                    cursor.getDouble(8) //d2
+
+            );
+            results.add(observation); cursor.moveToNext();
+
+        }
         cursor.close();
         return results;
     }

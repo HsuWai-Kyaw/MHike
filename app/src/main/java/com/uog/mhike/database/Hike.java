@@ -2,6 +2,9 @@ package com.uog.mhike.database;
 
 import android.content.Intent;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 public class Hike {
 //variables for table columns and keys while passing params from entry activity to detail activity
     public static final String ID ="id";
@@ -46,6 +49,7 @@ public class Hike {
         this.additional2 = additional2;
         this.additionalNum1 = additionalNum1;
         this.additionalNum2 = additionalNum2;
+
     }
 
     public Hike(String name, String location, String date, String parking, Double length, String difficulty, String description, String additional1, String additional2, Double additionalNum1, Double additionalNum2) {
