@@ -20,4 +20,7 @@
     <string name="btnDelete">Delete</string>
     <string name="lblObservation">Observation</string>
     <string name="lblComment">Comment</string>
+    <string name="btnObservationView">View</string>
+    <string name="btnObservationEdit">Edit</string>
+    <string name="btnObservationDelete">Delete</string>
 </resources>

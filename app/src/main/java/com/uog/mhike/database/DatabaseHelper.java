@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
 
     private static final String CREATE_HIKE_TABLE =String.format(
-            "CREATE TABLE IF NOT EXIST %s("+ //tblHike
+            "CREATE TABLE IF NOT EXISTS %s("+ //tblHike
                     " %s INTEGER PRIMARY KEY AUTOINCREMENT," + //id
                     " %s TEXT,"+ //name
                     " %s TEXT,"+ //location
@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String CREATE_OBSERVATION_TABLE =String.format(
-            "CREATE TABLE IF NOT EXIST %s("+ //tblObservation
+            "CREATE TABLE IF NOT EXISTS %s("+ //tblObservation
                     " %s INTEGER PRIMARY KEY AUTOINCREMENT," + //id
                     " %s INTEGER,"+ //hike_id
                     " %s TEXT,"+ //observation
@@ -53,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
 
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 2); //version :2
         database = getWritableDatabase();
         if (database != null) {
             database.execSQL("PRAGMA encoding ='UTF-8'");
@@ -195,7 +195,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues rowValues =new ContentValues();
 
         rowValues.put(Observation.OBSERVATION,observation.getObservation());
-        rowValues.put(Observation.DATE_TIME, observation.dateTimeToSeconds());
         rowValues.put(Observation.COMMENT, observation.getComment());
         rowValues.put(Observation.STR1, observation.getStr1());
         rowValues.put(Observation.STR2, observation.getStr2());

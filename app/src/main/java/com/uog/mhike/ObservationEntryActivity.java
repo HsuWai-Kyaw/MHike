@@ -2,7 +2,6 @@ package com.uog.mhike;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,45 +31,55 @@ public class ObservationEntryActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle !=null){
             hikeId = bundle.getInt(Observation.HIKE_ID);
+
+            id=bundle.getInt(Observation.ID,0);
+            String observation = bundle.getString(Observation.OBSERVATION,"");
+            String comment = bundle.getString(Observation.COMMENT,"");
+
+            txtObservation.setText(observation);
+            txtComment.setText(comment);
         }
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String strobservation = txtObservation.getText().toString();
-                if (strobservation == null || strobservation.trim().isEmpty()){
+                String strObservation = txtObservation.getText().toString();
+                if (strObservation == null || strObservation.trim().isEmpty()){
                     Toast.makeText(getBaseContext(), "Please enter the observation", Toast.LENGTH_LONG).show();
                     txtObservation.requestFocus();
                     return;
                 }
 
                 DatabaseHelper databaseHelper = new DatabaseHelper(getBaseContext());
-        long result =0;
-        if (id ==0){
-            Observation observation = new Observation(hikeId, strobservation, ZonedDateTime.now(),
-                    txtComment.getText().toString(), null,null, null,null);
-            result = databaseHelper.saveObservation(observation);
+                long result =0;
+                if (id ==0){
+                    Observation observation = new Observation(hikeId, strObservation, ZonedDateTime.now(),
+                            txtComment.getText().toString(), null,null, null,null);
+                    result = databaseHelper.saveObservation(observation);
 
-        }else{
-            //TODO update
-
-        }
+                }else{
+                    //TODO update
+                    Observation observation = new Observation(id,hikeId, strObservation, null,
+                            txtComment.getText().toString(), null,null, null,null);
+                    result = databaseHelper.updateObservation(observation);
+                }
                 if(result>0){
                     //successful
-                    new AlertDialog.Builder(ObservationEntryActivity.this).setTitle("Success")
-                            .setMessage("Successfully saved Hike Data.").setIcon(R.drawable.baseline_info_24).show();
-                    Toast.makeText(getBaseContext(), "Observation data saved successfully.", Toast.LENGTH_LONG).show();
+//                    new AlertDialog.Builder(ObservationEntryActivity.this).setTitle("Success")
+//                            .setMessage("Successfully saved Observation Data.").setIcon(R.drawable.baseline_info_24).show();
+                    Toast.makeText(getBaseContext(), "Observation data successfully saved.",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);
                     finish();
                 }else {
                     //fail
-                    new AlertDialog.Builder(ObservationEntryActivity.this).setTitle("Failed")
-                            .setMessage("Something went wrong!").setIcon(R.drawable.baseline_error_24).show();
+//                    new AlertDialog.Builder(ObservationEntryActivity.this).setTitle("Failed")
+//                            .setMessage("Something went wrong!").setIcon(R.drawable.baseline_error_24).show();
                     Toast.makeText(getBaseContext(), "Observation data was not saved.", Toast.LENGTH_LONG).show();
 
                 }
             }
+
         });
     }
 }
